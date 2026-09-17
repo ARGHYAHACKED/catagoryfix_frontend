@@ -10,7 +10,6 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
-    "@catalogfix/types": "workspace:*",
     "@tanstack/react-query": "^5.62.8",
     "lucide-react": "^1.46.0",
     "next": "^15.1.3",
