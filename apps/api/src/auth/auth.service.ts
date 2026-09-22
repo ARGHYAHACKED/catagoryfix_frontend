@@ -68,7 +68,7 @@ export class AuthService {
     const passwordHash = await bcrypt.hash(`${input.password}${config.PASSWORD_PEPPER}`, SALT_ROUNDS);
     const orgName = input.organizationName?.trim() || `${input.name}'s workspace`;
     const baseSlug = slugify(orgName) || 'workspace';
-    const result = await prisma.$transaction(async (tx) => {
+    const result = await prisma.$transaction(async (tx: any) => {
       const user = await tx.user.create({
         data: { email, passwordHash, name: input.name, status: UserStatus.ACTIVE },
       });
@@ -145,7 +145,7 @@ export class AuthService {
     });
     return {
       user: { id: user.id, email: user.email, name: user.name, systemRole: user.systemRole },
-      organizations: memberships.map((m) => ({
+      organizations: memberships.map((m: any) => ({
         id: m.organization.id,
         name: m.organization.name,
         slug: m.organization.slug,

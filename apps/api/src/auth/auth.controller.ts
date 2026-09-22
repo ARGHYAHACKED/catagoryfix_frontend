@@ -27,7 +27,7 @@ export class AuthController {
     });
     return {
       user,
-      organizations: memberships.map((m) => ({
+      organizations: memberships.map((m: any) => ({
         id: m.organization.id,
         name: m.organization.name,
         slug: m.organization.slug,

@@ -45,7 +45,7 @@ export class ExportsController {
     });
     // Monthly export limit bypassed for development
     const totalProducts = await prisma.product.count({ where: { importId: importJob.id, deletedAt: null } });
-    const job = await prisma.$transaction(async (tx) => {
+    const job = await prisma.$transaction(async (tx: any) => {
       const created = await tx.exportJob.create({
         data: {
           organizationId: orgId,

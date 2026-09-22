@@ -13,7 +13,7 @@ export class OrganizationsController {
       where: { userId: req.user!.id },
       include: { organization: { include: { subscription: true } } },
     });
-    return memberships.map((m) => ({
+    return memberships.map((m: any) => ({
       id: m.organization.id,
       name: m.organization.name,
       slug: m.organization.slug,
@@ -26,7 +26,7 @@ export class OrganizationsController {
   async create(@Req() req: Request & { user?: AuthUser }, @Body() body: { name: string }) {
     const name = body.name?.trim();
     const base = slugify(name || 'workspace') || 'workspace';
-    const result = await prisma.$transaction(async (tx) => {
+    const result = await prisma.$transaction(async (tx: any) => {
       let slug = base;
       let n = 1;
       while (await tx.organization.findUnique({ where: { slug } })) {
