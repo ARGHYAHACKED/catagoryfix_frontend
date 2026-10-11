@@ -1,4 +1,12 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/api/v1';
+const RAW_API_URL = (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/api/v1').trim().replace(/\/+$/, '');
+
+function buildUrl(path: string): string {
+  let cleanPath = path.startsWith('/') ? path : `/${path}`;
+  if (RAW_API_URL.endsWith('/api/v1') && cleanPath.startsWith('/api/v1/')) {
+    cleanPath = cleanPath.slice(7);
+  }
+  return `${RAW_API_URL}${cleanPath}`;
+}
 
 export class ApiError extends Error {
   constructor(
@@ -18,7 +26,7 @@ export async function api<T>(
   if (options.organizationId) {
     headers.set('x-organization-id', options.organizationId);
   }
-  const response = await fetch(`${API_URL}${path}`, {
+  const response = await fetch(buildUrl(path), {
     ...options,
     headers,
     credentials: 'include',
@@ -30,12 +38,12 @@ export async function api<T>(
   };
   if (response.status === 401 && !path.startsWith('/auth/')) {
     try {
-      const refreshRes = await fetch(`${API_URL}/auth/refresh`, {
+      const refreshRes = await fetch(buildUrl('/auth/refresh'), {
         method: 'POST',
         credentials: 'include',
       });
       if (refreshRes.ok) {
-        const retryResponse = await fetch(`${API_URL}${path}`, {
+        const retryResponse = await fetch(buildUrl(path), {
           ...options,
           headers,
           credentials: 'include',

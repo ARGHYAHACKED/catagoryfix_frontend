@@ -129,9 +129,6 @@ importers:
 
   apps/web:
     dependencies:
-      '@catalogfix/types':
-        specifier: workspace:*
-        version: link:../../packages/types
       '@tanstack/react-query':
         specifier: ^5.62.8
         version: 5.102.8(react@19.3.0)
