@@ -32,13 +32,13 @@ export class AdminGuard implements CanActivate {
       }
 
       // Check system role or allow if email is admin@catalogfix.io (fallback)
-      const isAdmin = (user as any).systemRole === 'ADMIN' || user.email === 'admin@catalogfix.io';
+      const isAdmin = user.systemRole === 'ADMIN' || user.email === 'admin@catalogfix.io';
 
       if (!isAdmin) {
         throw new ForbiddenException({ code: 'FORBIDDEN', message: 'System Administrator privileges required.' });
       }
 
-      req.user = { id: user.id, email: user.email, systemRole: (user as any).systemRole || 'ADMIN' };
+      req.user = { id: user.id, email: user.email, systemRole: user.systemRole || 'ADMIN' };
       return true;
     } catch (err) {
       if (err instanceof ForbiddenException || err instanceof UnauthorizedException) {

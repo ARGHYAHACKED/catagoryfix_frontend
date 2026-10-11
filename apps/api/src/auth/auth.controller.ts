@@ -16,6 +16,7 @@ export class AuthController {
       select: {
         id: true,
         email: true,
+
         name: true,
         systemRole: true,
         status: true,
@@ -24,10 +25,11 @@ export class AuthController {
     const memberships = await prisma.organizationMember.findMany({
       where: { userId: req.user!.id },
       include: { organization: true },
+      
     });
     return {
       user,
-      organizations: memberships.map((m: any) => ({
+      organizations: memberships.map((m) => ({
         id: m.organization.id,
         name: m.organization.name,
         slug: m.organization.slug,

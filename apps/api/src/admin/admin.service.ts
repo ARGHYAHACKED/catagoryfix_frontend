@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { prisma } from '@catalogfix/database';
+import { prisma, Prisma, SystemRole, UserStatus } from '@catalogfix/database';
 
 @Injectable()
 export class AdminService {
@@ -109,7 +109,7 @@ export class AdminService {
 
   async getAllUsers(search?: string, limit = 50, offset = 0) {
     try {
-      const whereClause: any = { deletedAt: null };
+      const whereClause: Prisma.UserWhereInput = { deletedAt: null };
       if (search) {
         whereClause.OR = [
           { email: { contains: search, mode: 'insensitive' } },
@@ -154,19 +154,19 @@ export class AdminService {
     }
   }
 
-  async updateUserRole(userId: string, systemRole: 'USER' | 'ADMIN') {
+  async updateUserRole(userId: string, systemRole: SystemRole) {
     const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user) {
       throw new NotFoundException('User not found.');
     }
     return prisma.user.update({
       where: { id: userId },
-      data: { systemRole: systemRole as any },
+      data: { systemRole },
       select: { id: true, email: true, name: true, systemRole: true },
     });
   }
 
-  async updateUserStatus(userId: string, status: 'ACTIVE' | 'SUSPENDED') {
+  async updateUserStatus(userId: string, status: UserStatus) {
     const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user) {
       throw new NotFoundException('User not found.');

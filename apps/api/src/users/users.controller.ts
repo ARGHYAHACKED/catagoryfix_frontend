@@ -18,7 +18,7 @@ export class UsersController {
     });
     return {
       user,
-      organizations: memberships.map((m: any) => ({
+      organizations: memberships.map((m) => ({
         id: m.organization.id,
         name: m.organization.name,
         slug: m.organization.slug,

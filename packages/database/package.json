@@ -13,6 +13,7 @@
   "scripts": {
     "build": "prisma generate && tsc -p tsconfig.json",
     "generate": "node scripts/run-with-root-env.cjs prisma generate",
+    "db:generate": "prisma generate",
     "migrate:dev": "node scripts/run-with-root-env.cjs prisma migrate dev",
     "migrate:deploy": "node scripts/run-with-root-env.cjs prisma migrate deploy",
     "studio": "node scripts/run-with-root-env.cjs prisma studio",

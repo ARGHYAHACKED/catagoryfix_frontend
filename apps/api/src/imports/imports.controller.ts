@@ -56,7 +56,7 @@ export class ImportsController {
     });
     const plan = subscription?.plan ?? Plan.FREE;
     // Monthly import limit bypassed for development
-    const job = await prisma.$transaction(async (tx: any) => {
+    const job = await prisma.$transaction(async (tx) => {
       const created = await tx.importJob.create({
         data: {
           organizationId: orgId,
