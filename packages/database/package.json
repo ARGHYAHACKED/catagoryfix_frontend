@@ -11,9 +11,9 @@
     }
   },
   "scripts": {
-    "build": "prisma generate && tsc -p tsconfig.json",
-    "generate": "prisma generate",
-    "db:generate": "prisma generate",
+    "build": "prisma generate --schema=prisma/schema.prisma && tsc -p tsconfig.json",
+    "generate": "prisma generate --schema=prisma/schema.prisma",
+    "db:generate": "prisma generate --schema=prisma/schema.prisma",
     "migrate:dev": "node scripts/run-with-root-env.cjs prisma migrate dev",
     "migrate:deploy": "node scripts/run-with-root-env.cjs prisma migrate deploy",
     "studio": "node scripts/run-with-root-env.cjs prisma studio",
