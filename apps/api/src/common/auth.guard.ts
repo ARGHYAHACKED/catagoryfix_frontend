@@ -13,7 +13,11 @@ export interface AuthUser {
 export class AuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest<Request & { user?: AuthUser }>();
-    const token = req.cookies?.cf_access as string | undefined;
+    const authHeader = req.headers.authorization;
+    let token = req.cookies?.cf_access as string | undefined;
+    if (!token && authHeader?.startsWith('Bearer ')) {
+      token = authHeader.slice(7).trim();
+    }
     if (!token) {
       throw new UnauthorizedException({ code: 'UNAUTHENTICATED', message: 'Authentication required.' });
     }

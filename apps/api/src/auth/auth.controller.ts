@@ -45,7 +45,7 @@ export class AuthController {
   ) {
     const result = await this.auth.register(body);
     this.auth.setAuthCookies(res, result.tokens);
-    return { user: result.user, organization: result.organization };
+    return { user: result.user, organization: result.organization, tokens: result.tokens };
   }
 
   @Post('login')
@@ -56,15 +56,15 @@ export class AuthController {
   ) {
     const result = await this.auth.login(body.email, body.password, req.ip, req.headers['user-agent']);
     this.auth.setAuthCookies(res, result.tokens);
-    return { user: result.user, organizations: result.organizations };
+    return { user: result.user, organizations: result.organizations, tokens: result.tokens };
   }
 
   @Post('refresh')
   async refresh(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
-    const token = req.cookies?.cf_refresh as string | undefined;
+    const token = (req.cookies?.cf_refresh || (req.body?.refreshToken as string | undefined)) as string | undefined;
     const result = await this.auth.refresh(token);
     this.auth.setAuthCookies(res, result.tokens);
-    return { user: result.user };
+    return { user: result.user, tokens: result.tokens };
   }
 
   @Post('logout')

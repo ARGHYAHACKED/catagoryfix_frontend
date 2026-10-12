@@ -16,10 +16,11 @@ const SALT_ROUNDS = 12;
 export class AuthService {
   private cookieOptions() {
     const config = loadConfig();
+    const isProd = config.NODE_ENV === 'production' || config.COOKIE_SECURE;
     return {
       httpOnly: true,
-      secure: config.COOKIE_SECURE,
-      sameSite: 'lax' as const,
+      secure: isProd,
+      sameSite: (isProd ? 'none' : 'lax') as 'none' | 'lax',
       domain: config.COOKIE_DOMAIN === 'localhost' ? undefined : config.COOKIE_DOMAIN,
       path: '/',
     };
