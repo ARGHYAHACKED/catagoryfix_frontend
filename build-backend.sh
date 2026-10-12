@@ -8,7 +8,7 @@ echo "=== Step 2: Installing workspace dependencies ==="
 pnpm install --frozen-lockfile
 
 echo "=== Step 3: Generating Prisma Client and building packages ==="
-pnpm --filter @catalogfix/database generate
+pnpm --filter @catalogfix/database exec prisma generate --schema=prisma/schema.prisma
 pnpm --filter "./packages/*" build
 
 echo "=== Step 4: Building all monorepo apps ==="
